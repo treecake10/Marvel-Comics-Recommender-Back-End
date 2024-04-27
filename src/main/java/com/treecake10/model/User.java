@@ -44,6 +44,18 @@ public class User {
     @Column(name = "user_liked_events")
     private List<Category> likedEvents = new ArrayList<>();
 
+    @ElementCollection
+    @Column(name = "user_liked_characters")
+    private List<Category> likedCharacters = new ArrayList<>();
+
+    @ElementCollection
+    @Column(name = "user_liked_series")
+    private List<Category> likedSeries = new ArrayList<>();
+
+    @ElementCollection
+    @Column(name = "user_liked_comics")
+    private List<Category> likedComics = new ArrayList<>();
+
     public String getEmail() {
         return email;
     }
