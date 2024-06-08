@@ -3,7 +3,6 @@ package com.treecake10.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.treecake10.dto.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,26 +35,6 @@ public class User {
     @Column(name = "role")
     private USER_ROLE role = USER_ROLE.ROLE_CUSTOMER;
 
-    @ElementCollection
-    @Column(name = "user_liked_creators")
-    private List<Category> likedCreators = new ArrayList<>();
-
-    @ElementCollection
-    @Column(name = "user_liked_events")
-    private List<Category> likedEvents = new ArrayList<>();
-
-    @ElementCollection
-    @Column(name = "user_liked_characters")
-    private List<Category> likedCharacters = new ArrayList<>();
-
-    @ElementCollection
-    @Column(name = "user_liked_series")
-    private List<Category> likedSeries = new ArrayList<>();
-
-    @ElementCollection
-    @Column(name = "user_liked_comics")
-    private List<Category> likedComics = new ArrayList<>();
-
     public String getEmail() {
         return email;
     }
@@ -87,4 +66,9 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore // Add this annotation to break the bidirectional relationship during serialization
+    private List<LikedItem> likedItems = new ArrayList<>();
+
 }
