@@ -38,6 +38,5 @@ public class LikedItem {
         this.itemId = itemId;
     }
 
-    // Getters and Setters
 }
 
