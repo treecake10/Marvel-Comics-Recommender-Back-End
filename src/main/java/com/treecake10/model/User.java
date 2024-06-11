@@ -69,6 +69,6 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore // Add this annotation to break the bidirectional relationship during serialization
-    private List<LikedItem> likedItems = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
 }

@@ -27,8 +27,8 @@ public class UserController {
 
     @PostMapping("/like")
     public ResponseEntity<String> likeCharacter(@RequestHeader("Authorization") String jwt, @RequestBody ItemRequest itemRequest) throws Exception {
-        logger.debug("Received likeCharacter request. JWT: {}, itemId: {}, itemType: {}", jwt, itemRequest.getItemId(), itemRequest.getItemType(), itemRequest.getItemName());
-        userService.addLikedItem(jwt, itemRequest.getItemId(), itemRequest.getItemType(), itemRequest.getItemName());
+        logger.debug("Received likeCharacter request. JWT: {}, itemId: {}, itemType: {}", jwt, itemRequest.getItemId(), itemRequest.getItemType() itemRequest.getItemName());
+        userService.addLikedItem(jwt, itemRequest.getItemId(), itemRequest.getItemType());
         return new ResponseEntity<>("Character liked successfully", HttpStatus.OK);
     }
 

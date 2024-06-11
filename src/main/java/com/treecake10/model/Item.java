@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LikedItem {
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,9 @@ public class LikedItem {
 
     @Column(name = "item_id")
     private Long itemId;
+
+    @Column(name = "item_name")
+    private String itemName;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -36,6 +39,10 @@ public class LikedItem {
 
     public void setItemId(Long itemId) {
         this.itemId = itemId;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
 }
