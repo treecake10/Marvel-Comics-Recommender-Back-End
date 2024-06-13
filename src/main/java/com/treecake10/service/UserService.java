@@ -13,4 +13,10 @@ public interface UserService {
     boolean itemIsLiked(String jwt, Long itemId, String itemType) throws Exception;
 
     void removeLikedItem(String jwt, Long itemId, String itemType) throws Exception;
+
+    void addFavoritedItem(String jwt, Long itemId, String itemType, String itemName) throws Exception;
+
+    boolean itemIsFavorited(String jwt, Long itemId, String itemType) throws Exception;
+
+    void removeFavoritedItem(String jwt, Long itemId, String itemType) throws Exception;
 }

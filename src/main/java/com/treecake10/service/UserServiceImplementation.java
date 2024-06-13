@@ -1,9 +1,11 @@
 package com.treecake10.service;
 
 import com.treecake10.config.JwtProvider;
-import com.treecake10.model.Item;
+import com.treecake10.model.FavoritedItem;
+import com.treecake10.model.LikedItem;
 import com.treecake10.model.User;
-import com.treecake10.repository.ItemRepository;
+import com.treecake10.repository.FavoritedItemRepository;
+import com.treecake10.repository.LikedItemRepository;
 import com.treecake10.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,10 @@ public class UserServiceImplementation implements UserService{
     private JwtProvider jwtProvider;
 
     @Autowired
-    private ItemRepository itemRepository;
+    private LikedItemRepository likedItemRepository;
+
+    @Autowired
+    private FavoritedItemRepository favoritedItemRepository;
 
     @Override
     public User findUserByJwtToken(String jwt) throws Exception {
@@ -36,29 +41,59 @@ public class UserServiceImplementation implements UserService{
         }
         return user;
     }
-
+    @Override
     public void addLikedItem(String jwt, Long itemId, String itemType, String itemName) throws Exception {
         User user = findUserByJwtToken(jwt);
-        Item item = new Item();
+        LikedItem likedItem = new LikedItem();
+        likedItem.setItemType(itemType);
+        likedItem.setItemId(itemId);
+        likedItem.setItemName(itemName);
+        likedItem.setUser(user);
+        likedItemRepository.save(likedItem);
+    }
+    @Override
+    public boolean itemIsLiked(String jwt, Long itemId, String itemType) throws Exception {
+        User user = findUserByJwtToken(jwt);
+        LikedItem likedItem = likedItemRepository.findByUserAndItemIdAndItemType(user, itemId, itemType);
+        return likedItem != null;
+    }
+
+    @Override
+    public void removeLikedItem(String jwt, Long itemId, String itemType) throws Exception {
+        User user = findUserByJwtToken(jwt);
+        LikedItem likedItem = likedItemRepository.findByUserAndItemIdAndItemType(user, itemId, itemType);
+
+        if(likedItem != null) {
+            likedItemRepository.delete(likedItem);
+        } else {
+            throw new Exception("Item not found");
+        }
+    }
+
+    @Override
+    public void addFavoritedItem(String jwt, Long itemId, String itemType, String itemName) throws Exception {
+        User user = findUserByJwtToken(jwt);
+        FavoritedItem item = new FavoritedItem();
         item.setItemType(itemType);
         item.setItemId(itemId);
         item.setItemName(itemName);
         item.setUser(user);
-        itemRepository.save(item);
+        favoritedItemRepository.save(item);
     }
 
-    public boolean itemIsLiked(String jwt, Long itemId, String itemType) throws Exception {
+    @Override
+    public boolean itemIsFavorited(String jwt, Long itemId, String itemType) throws Exception {
         User user = findUserByJwtToken(jwt);
-        Item item = itemRepository.findByUserAndItemIdAndItemType(user, itemId, itemType);
+        FavoritedItem item = favoritedItemRepository.findByUserAndItemIdAndItemType(user, itemId, itemType);
         return item != null;
     }
 
-    public void removeLikedItem(String jwt, Long itemId, String itemType) throws Exception {
+    @Override
+    public void removeFavoritedItem(String jwt, Long itemId, String itemType) throws Exception {
         User user = findUserByJwtToken(jwt);
-        Item item = itemRepository.findByUserAndItemIdAndItemType(user, itemId, itemType);
-
-        if(item != null) {
-            itemRepository.delete(item);
+        FavoritedItem item = favoritedItemRepository.findByUserAndItemIdAndItemType(user, itemId, itemType);
+        if (item != null) {
+            favoritedItemRepository.delete(item);
         } else {
             throw new Exception("Item not found");
         }

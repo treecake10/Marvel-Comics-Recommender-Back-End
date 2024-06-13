@@ -6,11 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "liked_item")
+@Table(name = "favorited_item")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Item {
+public class FavoritedItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +44,4 @@ public class Item {
     public void setItemName(String itemName) {
         this.itemName = itemName;
     }
-
 }
-

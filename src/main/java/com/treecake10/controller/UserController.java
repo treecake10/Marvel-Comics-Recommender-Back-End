@@ -50,4 +50,25 @@ public class UserController {
         return new ResponseEntity<>("Character unliked successfully", HttpStatus.OK);
     }
 
+    @PostMapping("/favorite")
+    public ResponseEntity<String> favoriteCharacter(@RequestHeader("Authorization") String jwt, @RequestBody ItemRequest itemRequest) throws Exception {
+        logger.debug("Received favoriteCharacter request. JWT: {}, itemId: {}, itemType: {}, itemName: {}", jwt, itemRequest.getItemId(), itemRequest.getItemType(), itemRequest.getItemName());
+        userService.addFavoritedItem(jwt, itemRequest.getItemId(), itemRequest.getItemType(), itemRequest.getItemName());
+        return new ResponseEntity<>("Character favorited successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/itemIsFavorited")
+    public ResponseEntity<Boolean> itemIsFavorited(@RequestHeader("Authorization") String jwt, @RequestParam Long itemId, @RequestParam String itemType) throws Exception {
+        logger.debug("Received itemIsFavorited request. JWT: {}, itemId: {}, itemType: {}", jwt, itemId, itemType);
+        boolean isFavorited = userService.itemIsFavorited(jwt, itemId, itemType);
+        return new ResponseEntity<>(isFavorited, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/unfavorite")
+    public ResponseEntity<String> unfavoriteCharacter(@RequestHeader("Authorization") String jwt, @RequestBody ItemRequest itemRequest) throws Exception {
+        logger.debug("Received unfavoriteCharacter request. JWT: {}, itemId: {}, itemType: {}", jwt, itemRequest.getItemId(), itemRequest.getItemType());
+        userService.removeFavoritedItem(jwt, itemRequest.getItemId(), itemRequest.getItemType());
+        return new ResponseEntity<>("Character unfavorited successfully", HttpStatus.OK);
+    }
+
 }
